@@ -1,0 +1,5 @@
+#!/bin/bash
+
+javac -d common/out  $(find common/src -name "*.java")
+javac -cp common/out -d server/out $(find server/src -name "*.java")
+javac -cp common/out -d client/out $(find client/src -name "*.java")
