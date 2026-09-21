@@ -4,13 +4,12 @@ import java.lang.reflect.Proxy;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 
-import vet.common.Hello;
+import vet.common.Animal;
 
 /**
- * Le CLIENT. Il ne connait que l'interface Hello, jamais HelloImpl.
+ * Le CLIENT. Il ne connait que l'interface Animal, jamais AnimalImpl.
  *
  * Usage : java vet.client.Client [hote]
- *         (l'argument est un NOM D'HOTE, pas un numero de port)
  */
 public class Client {
 
@@ -18,13 +17,15 @@ public class Client {
         String host = (args.length < 1) ? null : args[0];
         try {
             Registry registry = LocateRegistry.getRegistry(host, 1099);
-            Hello stub = (Hello) registry.lookup("Hello");
+            Animal stub = (Animal) registry.lookup("Link");
 
             System.out.println("classe du stub : " + stub.getClass().getName());
             System.out.println("proxy dynamique ? " + Proxy.isProxyClass(stub.getClass()));
 
-            System.out.println("response: " + stub.sayHello());
-            stub.printHello();
+            System.out.println("nom     : " + stub.getName());
+            System.out.println("maitre  : " + stub.getOwnerName());
+            System.out.println("race    : " + stub.getRace());
+            System.out.println("espece  : " + stub.getSpecies());
         } catch (Exception e) {
             System.err.println("Client exception: " + e);
             e.printStackTrace();

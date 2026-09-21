@@ -11,27 +11,37 @@ import vet.common.Animal;
  */
 public class AnimalImpl extends UnicastRemoteObject implements Animal {
 
-    public AnimalImpl() throws RemoteException {
-        super();    // c'est ici que l'objet est exporte
+    private final String name;
+    private final String ownerName;
+    private final String race;
+    private final String species;
+
+    public AnimalImpl(String name, String ownerName, String race, String species)
+            throws RemoteException {
+        super(); // c'est ici que l'objet est exporte
+        this.name = name;
+        this.ownerName = ownerName;
+        this.race = race;
+        this.species = species;
     }
 
     @Override
     public String getName() throws RemoteException {
-        return "Animal";
+        return name;
     }
 
     @Override
     public String getOwnerName() throws RemoteException {
-        return "Owner";
-    }
-
-    @Override
-    public String getSpecies() throws RemoteException {
-        return "Species";
+        return ownerName;
     }
 
     @Override
     public String getRace() throws RemoteException {
-        return "Race";
+        return race;
+    }
+
+    @Override
+    public String getSpecies() throws RemoteException {
+        return species;
     }
 }
