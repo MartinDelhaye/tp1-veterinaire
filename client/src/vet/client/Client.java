@@ -1,15 +1,15 @@
-package hello.client;
+package vet.client;
 
 import java.lang.reflect.Proxy;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 
-import hello.common.Hello;
+import vet.common.Hello;
 
 /**
  * Le CLIENT. Il ne connait que l'interface Hello, jamais HelloImpl.
  *
- * Usage : java hello.client.Client [hote]
+ * Usage : java vet.client.Client [hote]
  *         (l'argument est un NOM D'HOTE, pas un numero de port)
  */
 public class Client {

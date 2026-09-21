@@ -1,16 +1,16 @@
-package hello.server;
+package vet.server;
 
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 
-import hello.common.Hello;
+import vet.common.Hello;
 
 /**
  * Le LANCEUR du serveur : il cree le servant et le publie.
  *
  * Deux modes, comme en TD 1 :
- *   java hello.server.Server             -> registre externe (rmiregistry)
- *   java hello.server.Server --embedded  -> registre cree dans cette JVM
+ *   java vet.server.Server             -> registre externe (rmiregistry)
+ *   java vet.server.Server --embedded  -> registre cree dans cette JVM
  */
 public class Server {
 
