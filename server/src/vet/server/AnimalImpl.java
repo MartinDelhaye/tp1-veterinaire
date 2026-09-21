@@ -4,6 +4,7 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 
 import vet.common.Animal;
+import vet.common.Species;
 
 /**
  * Le SERVANT : l'objet reel, qui ne quitte jamais la JVM du serveur.
@@ -14,9 +15,9 @@ public class AnimalImpl extends UnicastRemoteObject implements Animal {
     private final String name;
     private final String ownerName;
     private final String race;
-    private final String species;
+    private final Species species;
 
-    public AnimalImpl(String name, String ownerName, String race, String species)
+    public AnimalImpl(String name, String ownerName, String race, Species species)
             throws RemoteException {
         super(); // c'est ici que l'objet est exporte
         this.name = name;
@@ -41,7 +42,8 @@ public class AnimalImpl extends UnicastRemoteObject implements Animal {
     }
 
     @Override
-    public String getSpecies() throws RemoteException {
+    public Species getSpecies() throws RemoteException {
+        System.out.println("[serveur] identityHashCode : " +  System.identityHashCode(species));
         return species;
     }
 }

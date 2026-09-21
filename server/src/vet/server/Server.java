@@ -4,6 +4,7 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 
 import vet.common.Animal;
+import vet.common.Species;
 
 /**
  * Le LANCEUR du serveur : il cree le servant et le publie.
@@ -18,7 +19,9 @@ public class Server {
     public static void main(String[] args) {
         boolean embedded = args.length > 0 && "--embedded".equals(args[0]);
         try {
-            Animal link = new AnimalImpl("Link", "Martin", "Chat noir et blanc trop mignon", "Chat");
+
+            Species chat = new Species("Chat",15);
+            Animal link = new AnimalImpl("Link", "Martin", "Chat noir et blanc trop mignon", chat);
 
             Registry registry = embedded
                     ? LocateRegistry.createRegistry(PORT)
