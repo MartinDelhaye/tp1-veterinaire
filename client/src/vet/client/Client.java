@@ -5,6 +5,8 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 
 import vet.common.Animal;
+import vet.common.Observation;
+import vet.common.PatientRecord;
 import vet.common.Species;
 
 /**
@@ -39,6 +41,20 @@ public class Client {
             System.out.println("# apres la mutation locale du client [linkSpecies]");
             System.out.println("[getSpecies] "+link.getSpecies());
             System.out.println("[linkSpecies] "+ linkSpecies);
+
+            System.out.println("Recup du dossier patient de Link");
+            PatientRecord linkRecord = link.getRecord();
+            Observation observation = new Observation("Il boit dans sa fontaine à eau !");
+            linkRecord.addObservation(observation);
+            System.out.println("Observation ajoutee");
+            linkRecord.setHealthStatus("bonne santé");
+            System.out.println("Statut de sante modifie : "+ linkRecord.getHealthStatus());
+
+            System.out.println("Liste des observations : ");
+            for (Observation focus : linkRecord.getObservations()) {
+                System.out.println("  " + focus.getDate() + ": " + focus.getObservation());
+            }
+
 
         } catch (Exception e) {
             System.err.println("Client exception: " + e);

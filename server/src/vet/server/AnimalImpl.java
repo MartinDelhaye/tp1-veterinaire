@@ -4,6 +4,7 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 
 import vet.common.Animal;
+import vet.common.PatientRecord;
 import vet.common.Species;
 
 /**
@@ -16,14 +17,20 @@ public class AnimalImpl extends UnicastRemoteObject implements Animal {
     private final String ownerName;
     private final String race;
     private final Species species;
+    private final PatientRecord record;
 
-    public AnimalImpl(String name, String ownerName, String race, Species species)
+    public AnimalImpl(
+            String name,
+            String ownerName,
+            String race,
+            Species species)
             throws RemoteException {
         super(); // c'est ici que l'objet est exporte
         this.name = name;
         this.ownerName = ownerName;
         this.race = race;
         this.species = species;
+        this.record = new PatientRecordImpl();
     }
 
     @Override
@@ -45,5 +52,10 @@ public class AnimalImpl extends UnicastRemoteObject implements Animal {
     public Species getSpecies() throws RemoteException {
         System.out.println("[serveur] identityHashCode : " +  System.identityHashCode(species));
         return species;
+    }
+
+    @Override
+    public PatientRecord getRecord() throws RemoteException {
+        return record;
     }
 }

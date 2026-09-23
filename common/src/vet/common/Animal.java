@@ -9,4 +9,5 @@ public interface Animal extends Remote {
     String getOwnerName() throws RemoteException;
     String getRace() throws RemoteException;
     Species getSpecies() throws RemoteException;
+    PatientRecord getRecord() throws RemoteException;
 }
