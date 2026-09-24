@@ -9,6 +9,7 @@ import java.util.List;
 import vet.common.Animal;
 import vet.common.Cabinet;
 import vet.common.Observation;
+import vet.common.PatientNotFoundException;
 import vet.common.PatientRecord;
 import vet.common.Species;
 
@@ -28,16 +29,18 @@ public class Client {
         }
     }
 
-    private static Animal rechercherPatient(Cabinet cabinet, String name) throws RemoteException {
+    private static Animal rechercherPatient(Cabinet cabinet, String name)
+            throws PatientNotFoundException, RemoteException {
         Animal patient = cabinet.getPatient(name);
-        String statut = (patient == null) ? "pas trouve" : "trouve";
-        System.out.println("Recherche du patient " + name + " : " + statut);
         return patient;
     }
 
     private static void rechercherPatientInexistant(Cabinet cabinet, String name) throws RemoteException {
-        Animal resultat = cabinet.getPatient(name);
-        System.out.println("Recherche du patient " + name + " : " + resultat);
+        try {
+            cabinet.getPatient(name);
+        } catch (PatientNotFoundException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     private static void afficherInfosAnimal(Animal animal) throws RemoteException {
@@ -83,20 +86,25 @@ public class Client {
             Cabinet cabinet = (Cabinet) registry.lookup("cabinet");
             // A4
             afficherTousLesPatients(cabinet);
-            Animal link = rechercherPatient(cabinet, "Link");
             rechercherPatientInexistant(cabinet, "Nom qui n'existe pas");
 
-            // A1
-            System.out.println("------------");
-            afficherInfosAnimal(link);
+            try {
+                Animal link = rechercherPatient(cabinet, "Link");
+                System.out.println("Patient 'Link' trouvé");
+                // A1
+                System.out.println("------------");
+                afficherInfosAnimal(link);
 
-            // A2
-            System.out.println("------------");
-            testerPassageParValeur(link);
+                // A2
+                System.out.println("------------");
+                testerPassageParValeur(link);
 
-            // // A3
-            System.out.println("------------");
-            testerDossierPatient(link);
+                // // A3
+                System.out.println("------------");
+                testerDossierPatient(link);
+            } catch (PatientNotFoundException e) {
+                System.out.println(e.getMessage());
+            }
 
         } catch (Exception e) {
             System.err.println("Client exception: " + e);
