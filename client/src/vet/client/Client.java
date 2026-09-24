@@ -1,10 +1,13 @@
 package vet.client;
 
 import java.lang.reflect.Proxy;
+import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import java.util.List;
 
 import vet.common.Animal;
+import vet.common.Cabinet;
 import vet.common.Observation;
 import vet.common.PatientRecord;
 import vet.common.Species;
@@ -16,45 +19,84 @@ import vet.common.Species;
  */
 public class Client {
 
+    private static void afficherTousLesPatients(Cabinet cabinet) throws RemoteException {
+        System.out.println("Liste des patients :");
+        List<Animal> patients = cabinet.getPatients();
+        int indexPatient = 1;
+        for (Animal patient : patients) {
+            System.out.println("    Patient " + indexPatient++ + " :" + patient.getName());
+        }
+    }
+
+    private static Animal rechercherPatient(Cabinet cabinet, String name) throws RemoteException {
+        Animal patient = cabinet.getPatient(name);
+        String statut = (patient == null) ? "pas trouve" : "trouve";
+        System.out.println("Recherche du patient " + name + " : " + statut);
+        return patient;
+    }
+
+    private static void rechercherPatientInexistant(Cabinet cabinet, String name) throws RemoteException {
+        Animal resultat = cabinet.getPatient(name);
+        System.out.println("Recherche du patient " + name + " : " + resultat);
+    }
+
+    private static void afficherInfosAnimal(Animal animal) throws RemoteException {
+        System.out.println("Infos sur le patient " + animal.getName() + ":");
+        System.out.println("nom     : " + animal.getName());
+        System.out.println("maitre  : " + animal.getOwnerName());
+        System.out.println("race    : " + animal.getRace());
+        System.out.println("espece  : " + animal.getSpecies().getName());
+        System.out.println("classe du stub : " + animal.getClass().getName());
+        System.out.println("proxy dynamique ? " + Proxy.isProxyClass(animal.getClass()));
+    }
+
+    private static void testerPassageParValeur(Animal animal) throws RemoteException {
+        Species animalSpecies = animal.getSpecies();
+        System.out.println("# identite des objets");
+        System.out.println("[getSpecies] identityHashCode : " + System.identityHashCode(animal.getSpecies()));
+        System.out.println("[animalSpecies] identityHashCode : " + System.identityHashCode(animalSpecies) + "\n");
+        animalSpecies.setAverageLife(99);
+        System.out.println("# apres la mutation locale du client [animalSpecies]");
+        System.out.println("[getSpecies] " + animal.getSpecies());
+        System.out.println("[animalSpecies] " + animalSpecies);
+    }
+
+    private static void testerDossierPatient(Animal animal) throws RemoteException {
+        System.out.println("Recup du dossier patient de " + animal.getName());
+        PatientRecord animalRecord = animal.getRecord();
+        Observation observation = new Observation("Il boit dans sa fontaine à eau !");
+        animalRecord.addObservation(observation);
+        System.out.println("Observation ajoutee");
+        animalRecord.setHealthStatus("bonne santé");
+        System.out.println("Statut de sante modifie : " + animalRecord.getHealthStatus());
+
+        System.out.println("Liste des observations : ");
+        for (Observation focus : animalRecord.getObservations()) {
+            System.out.println("  " + focus.getDate() + ": " + focus.getObservation());
+        }
+    }
+
     public static void main(String[] args) {
         String host = (args.length < 1) ? null : args[0];
         try {
             Registry registry = LocateRegistry.getRegistry(host, 1099);
-            Animal link = (Animal) registry.lookup("Link");
+            Cabinet cabinet = (Cabinet) registry.lookup("cabinet");
+            // A4
+            afficherTousLesPatients(cabinet);
+            Animal link = rechercherPatient(cabinet, "Link");
+            rechercherPatientInexistant(cabinet, "Nom qui n'existe pas");
 
-            System.out.println("classe du stub : " + link.getClass().getName());
-            System.out.println("proxy dynamique ? " + Proxy.isProxyClass(link.getClass()));
+            // A1
+            System.out.println("------------");
+            afficherInfosAnimal(link);
 
-            System.out.println("nom     : " + link.getName());
-            System.out.println("maitre  : " + link.getOwnerName());
-            System.out.println("race    : " + link.getRace());
-            System.out.println("espece  : " + link.getSpecies());
-            System.out.println("\n");
+            // A2
+            System.out.println("------------");
+            testerPassageParValeur(link);
 
-            Species linkSpecies = link.getSpecies();
-            System.out.println("# identite des objets");
-            System.out.println("[getSpecies] identityHashCode : " +  System.identityHashCode(link.getSpecies()));
-            System.out.println("[linkSpecies] identityHashCode : "+  System.identityHashCode(linkSpecies));
-            System.out.println("\n");
-
-            linkSpecies.setAverageLife(99);  
-            System.out.println("# apres la mutation locale du client [linkSpecies]");
-            System.out.println("[getSpecies] "+link.getSpecies());
-            System.out.println("[linkSpecies] "+ linkSpecies);
-
-            System.out.println("Recup du dossier patient de Link");
-            PatientRecord linkRecord = link.getRecord();
-            Observation observation = new Observation("Il boit dans sa fontaine à eau !");
-            linkRecord.addObservation(observation);
-            System.out.println("Observation ajoutee");
-            linkRecord.setHealthStatus("bonne santé");
-            System.out.println("Statut de sante modifie : "+ linkRecord.getHealthStatus());
-
-            System.out.println("Liste des observations : ");
-            for (Observation focus : linkRecord.getObservations()) {
-                System.out.println("  " + focus.getDate() + ": " + focus.getObservation());
-            }
-
+            // // A3
+            System.out.println("------------");
+            testerDossierPatient(link);
 
         } catch (Exception e) {
             System.err.println("Client exception: " + e);
