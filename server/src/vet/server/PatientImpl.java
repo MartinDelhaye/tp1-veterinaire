@@ -3,7 +3,7 @@ package vet.server;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 
-import vet.common.Animal;
+import vet.common.Patient;
 import vet.common.PatientRecord;
 import vet.common.Species;
 
@@ -11,7 +11,7 @@ import vet.common.Species;
  * Le SERVANT : l'objet reel, qui ne quitte jamais la JVM du serveur.
  * Il vit dans le projet server ; le client ne connait pas cette classe.
  */
-public class AnimalImpl extends UnicastRemoteObject implements Animal {
+public class PatientImpl extends UnicastRemoteObject implements Patient {
 
     private final String name;
     private final String ownerName;
@@ -19,7 +19,7 @@ public class AnimalImpl extends UnicastRemoteObject implements Animal {
     private final Species species;
     private final PatientRecord record;
 
-    public AnimalImpl(
+    public PatientImpl(
             String name,
             String ownerName,
             String race,
@@ -50,7 +50,7 @@ public class AnimalImpl extends UnicastRemoteObject implements Animal {
 
     @Override
     public Species getSpecies() throws RemoteException {
-        System.out.println("[serveur] identityHashCode : " +  System.identityHashCode(species));
+        System.out.println("[serveur] identityHashCode : " + System.identityHashCode(species));
         return species;
     }
 

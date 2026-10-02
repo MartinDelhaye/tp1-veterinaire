@@ -1,4 +1,4 @@
-package vet.common;
+package vet.common.exceptions;
 
 
 public class PatientNotFoundException extends Exception {
