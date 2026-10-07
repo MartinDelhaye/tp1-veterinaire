@@ -11,7 +11,6 @@ import vet.common.Species;
 import vet.common.exceptions.PatientAlreadyExistsException;
 
 public class Client {
-    
     private static void createPatientsInBulk(
             Cabinet cabinet,
             int count) throws RemoteException {
@@ -22,11 +21,10 @@ public class Client {
             System.out.println("Création du patient " + i + "...");
             try {
                 cabinet.createPatient(
-                    String.valueOf(i),
-                    "Test",
-                    "Test race",
-                    new Species("Test", 10)
-                );
+                        String.valueOf(i),
+                        "Test",
+                        "Test race",
+                        new Species("Test", 10));
             } catch (PatientAlreadyExistsException e) {
                 System.out.println(e.getMessage());
             }
@@ -43,6 +41,13 @@ public class Client {
             CabinetObserver observer = new CabinetObserverImpl();
             cabinet.subscribe(observer);
             System.out.println("Abonné aux alertes de seuils, en attente d'alertes...");
+            System.out.println("--------- Création d'un patient avec la class Chien ---------");
+            try {
+                Chien dogSpecies = new Chien();
+                cabinet.createPatient("Zébulon", "Mamie d'amour", "jsp", dogSpecies);
+            } catch (Exception e) {
+                System.err.println("Client exception: " + e);
+            }
             switch (mode) {
                 case "--createur":
                     Scanner scanner = new Scanner(System.in);
