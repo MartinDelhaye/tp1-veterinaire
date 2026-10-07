@@ -7,6 +7,8 @@ import java.util.Scanner;
 
 import vet.common.Cabinet;
 import vet.common.CabinetObserver;
+import vet.common.Chien;
+import vet.common.Patient;
 import vet.common.Species;
 import vet.common.exceptions.PatientAlreadyExistsException;
 
@@ -45,6 +47,11 @@ public class Client {
             try {
                 Chien dogSpecies = new Chien();
                 cabinet.createPatient("Zébulon", "Mamie d'amour", "jsp", dogSpecies);
+
+                Patient zebulon = cabinet.getPatient("Zébulon");
+                System.out.println("nom : " + zebulon.getName());
+                System.out.println("espèce : " + zebulon.getSpecies().getName());
+
             } catch (Exception e) {
                 System.err.println("Client exception: " + e);
             }

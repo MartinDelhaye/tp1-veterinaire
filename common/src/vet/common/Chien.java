@@ -1,6 +1,4 @@
-package vet.client;
-
-import vet.common.Species;
+package vet.common;
 
 public class Chien extends Species {
     public Chien() {
