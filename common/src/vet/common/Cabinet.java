@@ -11,4 +11,7 @@ public interface Cabinet extends Remote {
     List<Patient> getPatients() throws RemoteException;
     Patient getPatient(String name) throws RemoteException, PatientNotFoundException;
     Patient createPatient(String name, String ownerName, String race, Species species) throws RemoteException, PatientAlreadyExistsException;
+
+    void subscribe(CabinetObserver observer) throws RemoteException;
+    void unsubscribe(CabinetObserver observer) throws RemoteException;
 }
