@@ -50,7 +50,7 @@ public class Client {
 
                 Patient zebulon = cabinet.getPatient("Zébulon");
                 System.out.println("nom : " + zebulon.getName());
-                System.out.println("espèce : " + zebulon.getSpecies().getName());
+                System.out.println("espèce : " + zebulon.getSpecies().getClass().getName());
 
             } catch (Exception e) {
                 System.err.println("Client exception: " + e);
