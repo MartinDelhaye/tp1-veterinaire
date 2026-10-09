@@ -131,7 +131,8 @@ chmod 777 [nomDuScript]
 |---|---|
 | `compilation` | compile les trois projets |
 | `clean` | Nettoyer les projets |
-| `startServeur` | lance le serveur en mode interne (`--embedded`) |
+| `startServeurIntern` | lance le serveur en mode interne (`--embedded`) |
+| `startServeurExtern` | lance le registre externe puis le serveur |
 | `startClient` | lance le client CLI (transmet ses arguments) |
 
 ## 5. Utiliser la CLI
