@@ -1,0 +1,3 @@
+#!/bin/bash
+
+rm -rf common/out server/out client/out

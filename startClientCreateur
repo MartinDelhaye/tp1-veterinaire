@@ -1,3 +1,0 @@
-#!/bin/bash
-
-java -cp common/out:client/out vet.client.Client --createur
