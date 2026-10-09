@@ -1,0 +1,4 @@
+#!/bin/bash
+
+(cd common/out && rmiregistry &)
+java -cp common/out:server/out vet.server.Server
